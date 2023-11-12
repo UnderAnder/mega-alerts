@@ -328,13 +328,17 @@ def main():
             print("\n\nClearing Alert Record\n\n")
             alert_record = []
 
-        matching_realms = [
-            realm["dataSetID"]
-            for realm in mega_data.get_upload_time_list()
-            if realm["lastUploadMinute"] + mega_data.SCAN_TIME_MIN
-            <= current_min
-            <= realm["lastUploadMinute"] + mega_data.SCAN_TIME_MAX
-        ]
+        matching_realms = []
+        for realm in mega_data.get_upload_time_list():
+            min_time = realm["lastUploadMinute"] + mega_data.SCAN_TIME_MIN
+            max_time = realm["lastUploadMinute"] + mega_data.SCAN_TIME_MAX
+            if min_time <= current_min <= max_time:
+                matching_realms.append(realm["dataSetID"])
+
+        # check only specific realms
+        if mega_data.ALERT_SPECIFIC_REALMS:
+            matching_realms = list(set(matching_realms) & set(mega_data.ALERT_SPECIFIC_REALMS))
+
         # mega wants extra alerts
         if mega_data.EXTRA_ALERTS:
             extra_alert_mins = json.loads(mega_data.EXTRA_ALERTS)

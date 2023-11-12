@@ -123,6 +123,7 @@ We also have the following **optional** env vars you can add in to change alert 
 - `MEGA_THREADS=100` increase or decrease the threadcount (default to scan 48 realms at once)(more threads = faster scans, but doing more threads then realms is pointless).
 - `REFRESH_ALERTS="false"` if set to false then you will not see the same alert more than once (default true)
 - `NO_RUSSIAN_REALMS="true"` set this to true if you are on EU and do not want to get alerts from russian realms
+- `ALERT_SPECIFIC_REALMS={"alert_specific_realms" = []}` if set check only the specified realms, for example `{"alert_specific_realms" = [1302, 3674, 3686]}` there will be results only from Archimonde, Stormscale, Antonidas
 
 
 ## Different ways to run mega alerts
