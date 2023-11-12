@@ -26,7 +26,7 @@ def pull_single_realm_data(connected_id):
         return
     for auction in clean_auctions:
         if "itemID" in auction:
-            id_msg = f"`itemID:` {auction['itemID']}\n"
+            id_msg = f"```i:{auction['itemID']}```\n"
             if "tertiary_stats" in auction:
                 item_name = mega_data.DESIRED_ILVL_ITEMS["item_names"][
                     auction["itemID"]
@@ -45,9 +45,8 @@ def pull_single_realm_data(connected_id):
                 id_msg += f"`Name:` {pet_name}\n"
         message = (
             "==================================\n"
-            + f"`region:` {mega_data.REGION} "
-            + f"`realmID:` {auction['realmID']} "
             + id_msg
+            + f"`realmID:` {auction['realmID']}\n"
             + f"`realmNames`: {auction['realmNames']}\n"
         )
         if mega_data.WOWHEAD_LINK and "itemID" in auction:
