@@ -34,7 +34,8 @@ class MegaData:
         # set access token for wow api
         self.access_token_creation_unix_time = 0
         self.access_token = self.check_access_token()
-
+        # setup realms to snipe
+        self.ALERT_SPECIFIC_REALMS = self.__set_alert_specific_realms("alert_specific_realms")
         # setup items to snipe
         self.DESIRED_ITEMS = self.__set_desired_items("desired_items")
         self.DESIRED_PETS = self.__set_desired_items("desired_pets")
@@ -141,6 +142,23 @@ class MegaData:
             self.access_token = access_token_raw["access_token"]
             self.access_token_creation_unix_time = int(datetime.now().timestamp())
             return self.access_token
+
+    def __set_alert_specific_realms(self, item_list_name):
+        file_name = f"{item_list_name}.json"
+        env_var_name = item_list_name.upper()
+        alert_specific_realms_raw = json.load(open(f"user_data/mega/{file_name}"))
+        # if file is not set use env var
+        if len(alert_specific_realms_raw) == 0:
+            print(
+                f"no alert_specific_realms found in user_data/mega/{file_name} pulling from env vars"
+            )
+            if os.getenv(env_var_name):
+                alert_specific_realms_raw = json.loads(os.getenv(env_var_name))
+            else:
+                print(f"skipping {item_list_name} its not set in file or env var")
+                alert_specific_realms_raw = {}
+        return alert_specific_realms_raw["alert_specific_realms"]
+
 
     def __set_pet_names(self):
         pet_info = requests.get(
